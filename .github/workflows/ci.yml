@@ -19,7 +19,7 @@ jobs:
         python-version: "3.10"
 
     - name: Install dependencies
-      run: pip install -r requirements.txt
+      run: pip install -r 2025ae05445/Heart_Disease_Detection/requirements.txt
 
     - name: Lint code
       run: flake8 2025ae05445/Heart_Disease_Detection/api 2025ae05445/Heart_Disease_Detection/tests
