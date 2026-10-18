@@ -31,7 +31,7 @@ jobs:
       run: python train.py
 
     - name: Upload trained model artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: trained-model
-        path: models/champion_model.pkl
+        path: 2025ae05445/Heart_Disease_Detection/models/champion_model.pkl
