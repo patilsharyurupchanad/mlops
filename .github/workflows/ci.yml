@@ -11,10 +11,10 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: "3.10"
 
@@ -22,13 +22,13 @@ jobs:
       run: pip install -r requirements.txt
 
     - name: Lint code
-      run: flake8 api tests
+      run: flake8 2025ae05445/Heart_Disease_Detection/api 2025ae05445/Heart_Disease_Detection/tests
 
     - name: Run unit tests
-      run: pytest -v
+      run: pytest 2025ae05445/Heart_Disease_Detection/tests -v
 
     - name: Train model
-      run: python train.py
+      run: python 2025ae05445/Heart_Disease_Detection/train.py
 
     - name: Upload trained model artifact
       uses: actions/upload-artifact@v4
