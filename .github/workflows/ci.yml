@@ -34,4 +34,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: trained-model
-        path: champion_model.pkl
+        path: models/trained_model.pkl
