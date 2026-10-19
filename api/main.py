@@ -48,13 +48,13 @@ class InputData(BaseModel):
 def predict(data: InputData):
     # 1. Convert input JSON data to a pandas DataFrame
     raw_df = pd.DataFrame([data.dict()])
-    
+
     # 2. Re-apply the exact same get_dummies logic
     # as done in the notebook training
     categorical_cols = ["cp", "restecg", "thal", "slope"]
     processed_df = pd.get_dummies(raw_df, columns=categorical_cols,
                                   drop_first=False)
-    
+
     # In python pandas dummy names would look like 'cp_1', 'cp_2',
     # or 'thal_6.0' We need to guarantee 'thal' columns keep float
     # representations in string matching
@@ -66,11 +66,11 @@ def predict(data: InputData):
     for col in MODEL_INPUT_FEATURES:
         if col not in processed_df.columns:
             processed_df[col] = False
-            
+
     # Ensure features are in the exact structural order expected
     # by the model pipeline
     aligned_df = processed_df[MODEL_INPUT_FEATURES]
-    
+
     # 4. Predict and return prediction
     prediction = model.predict(aligned_df)
     return {"prediction": int(prediction[0])}
