@@ -22,6 +22,8 @@ MODEL_INPUT_FEATURES = [
 app = FastAPI(title="Heart Disease Detection")
 
 @app.get("/health")
+
+
 def health():
     return {"status": "ok", "message": "API is healthy"}
 
@@ -41,26 +43,32 @@ class InputData(BaseModel):
     thal: int
 
 @app.post("/predict")
+
+
 def predict(data: InputData):
     # 1. Convert input JSON data to a pandas DataFrame
     raw_df = pd.DataFrame([data.dict()])
     
-    # 2. Re-apply the exact same get_dummies logic as done in the notebook training
+    # 2. Re-apply the exact same get_dummies logic
+    # as done in the notebook training
     categorical_cols = ["cp", "restecg", "thal", "slope"]
     processed_df = pd.get_dummies(raw_df, columns=categorical_cols,
                                   drop_first=False)
     
-    # In python pandas dummy names would look like 'cp_1', 'cp_2', or 'thal_6.0'
-    # We need to guarantee 'thal' columns keep float representations in string matching
+    # In python pandas dummy names would look like 'cp_1', 'cp_2',
+    # or 'thal_6.0' We need to guarantee 'thal' columns keep float
+    # representations in string matching
     processed_df.columns = [
             col.replace(".0", ".0") for col in processed_df.columns]
 
-    # 3. Align Columns: Reindex to the 18 expected model features, setting absent columns to False
+    # 3. Align Columns: Reindex to the 18 expected model features,
+    # setting absent columns to False
     for col in MODEL_INPUT_FEATURES:
         if col not in processed_df.columns:
             processed_df[col] = False
             
-    # Ensure features are in the exact structural order expected by the model pipeline
+    # Ensure features are in the exact structural order expected
+    # by the model pipeline
     aligned_df = processed_df[MODEL_INPUT_FEATURES]
     
     # 4. Predict and return prediction
