@@ -8,10 +8,10 @@ pytest==8.4.2
 scikit-learn==1.6.1
 scipy==1.16.3
 skops==0.16.0
-flake8
-black
-pytest
-fastapi
-uvicorn
-joblib
-httpx2
+flake8==7.1.0
+black==24.8.0
+pytest==8.4.2
+fastapi==0.115.0
+uvicorn==0.30.0
+joblib==1.4.2
+httpx2==0.3.0
