@@ -29,9 +29,6 @@ def health():
 
 
 class InputData(BaseModel):
-     "trestbps", "chol", "fbs", "thalach", "exang", "oldpeak",
-    "ca", "cp_2", "cp_3", "cp_4", "restecg_1", "restecg_2", "thal_6.0",
-    "thal_7.0", "slope_2", "slope_3"
     age: int
     sex: int
     trestbps: int
@@ -80,7 +77,7 @@ def predict(data: InputData):
     aligned_df = processed_df[MODEL_INPUT_FEATURES]
 
     ## 4. Predict and return prediction
-    #prediction = model.predict(aligned_df)
+    prediction = model.predict(aligned_df)
     #return {"prediction": int(prediction[0])}
 
     # Get confidence score of the predicted class
