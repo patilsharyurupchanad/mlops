@@ -21,6 +21,6 @@ model.fit(X_train, y_train)
 os.makedirs("models", exist_ok=True)
 
 # Save trained model
-joblib.dump(model, "models/champion_model.pkl")
+joblib.dump(model, "models/trained_model.pkl")
 
-print("Model trained and saved to models/champion_model.pkl")
+print("Model trained and saved to models/trained_model.pkl")
