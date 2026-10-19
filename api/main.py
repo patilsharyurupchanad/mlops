@@ -4,6 +4,12 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 import pandas as pd
 import logging
+from prometheus_fastapi_instrumentator import Instrumentator
+
+app = FastAPI(title="Heart Disease Detection")
+
+Instrumentator().instrument(app).expose(app)
+
 
 logging.basicConfig(
     level=logging.INFO,
