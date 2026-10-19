@@ -1,10 +1,6 @@
 import joblib
 import pandas as pd
 
-#age  sex  trestbps  chol  fbs  thalach  exang  oldpeak   ca  target   cp_2  \
-#63    1       145   233    1      150      0      2.3  0.0       0  False
-#cp_3   cp_4  restecg_1  restecg_2  thal_6.0  thal_7.0  slope_2  slope_3
-#False  False      False       True      True     False    False     True 
 
 def test_model_prediction():
     model = joblib.load("models/champion_model.pkl")
