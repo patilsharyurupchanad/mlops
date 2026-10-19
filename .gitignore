@@ -1,5 +1,4 @@
 # Ignore machine learning model artifacts
-models/*.pkl
 models/*.h5
 models/*.pt
 models/*.onnx
