@@ -31,22 +31,17 @@ def health():
 class InputData(BaseModel):
     age: int
     sex: int
+    cp: int
     trestbps: int
     chol: int
     fbs: int
+    restecg: int
     thalach: int
     exang: int
     oldpeak: float
+    slope: int
     ca: int
-    cp_2: int
-    cp_3: int
-    cp_4: int
-    restecg_1: int
-    restecg_2: int
-    thal_6.0: int
-    thal_7.0: int
-    slope_2: int
-    slope_3: int
+    thal: int
 
 
 @app.post("/predict")
