@@ -14,8 +14,9 @@ model = joblib.load(MODEL_PATH)
 
 # The exact 18-column feature schema expected by the trained model pipeline
 MODEL_INPUT_FEATURES = [
-    "age", "sex", "trestbps", "chol", "fbs", "thalach", "exang", "oldpeak", "ca",
-    "cp_2", "cp_3", "cp_4", "restecg_1", "restecg_2", "thal_6.0", "thal_7.0", "slope_2", "slope_3"
+    "age", "sex", "trestbps", "chol", "fbs", "thalach", "exang", "oldpeak",
+    "ca", "cp_2", "cp_3", "cp_4", "restecg_1", "restecg_2", "thal_6.0",
+    "thal_7.0", "slope_2", "slope_3"
 ]
 
 app = FastAPI(title="Heart Disease Detection")
@@ -46,11 +47,13 @@ def predict(data: InputData):
     
     # 2. Re-apply the exact same get_dummies logic as done in the notebook training
     categorical_cols = ["cp", "restecg", "thal", "slope"]
-    processed_df = pd.get_dummies(raw_df, columns=categorical_cols, drop_first=False)
+    processed_df = pd.get_dummies(raw_df, columns=categorical_cols,
+                                  drop_first=False)
     
     # In python pandas dummy names would look like 'cp_1', 'cp_2', or 'thal_6.0'
     # We need to guarantee 'thal' columns keep float representations in string matching
-    processed_df.columns = [col.replace(".0", ".0") for col in processed_df.columns]
+    processed_df.columns = [
+            col.replace(".0", ".0") for col in processed_df.columns]
 
     # 3. Align Columns: Reindex to the 18 expected model features, setting absent columns to False
     for col in MODEL_INPUT_FEATURES:
