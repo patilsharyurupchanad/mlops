@@ -27,4 +27,3 @@ def test_predict():
     }
     response = client.post("/predict", json=sample)
     assert response.status_code == 200
-
