@@ -19,19 +19,19 @@ jobs:
         python-version: "3.12"
 
     - name: Install dependencies
-      run: pip install -r 2025ae05445/Heart_Disease_Detection/requirements.txt
+      run: pip install -r requirements.txt
 
     - name: Lint code
-      run: flake8 2025ae05445/Heart_Disease_Detection/api 2025ae05445/Heart_Disease_Detection/tests
+      run: flake8 api tests
 
     - name: Run unit tests
-      run: pytest 2025ae05445/Heart_Disease_Detection/tests -v
+      run: pytest tests -v
 
     - name: Train model
-      run: python 2025ae05445/Heart_Disease_Detection/train.py
+      run: python train.py
 
     - name: Upload trained model artifact
       uses: actions/upload-artifact@v4
       with:
         name: trained-model
-        path: 2025ae05445/Heart_Disease_Detection/models/champion_model.pkl
+        path: champion_model.pkl
