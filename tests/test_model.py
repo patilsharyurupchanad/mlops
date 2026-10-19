@@ -23,10 +23,10 @@ def test_model_prediction():
         "cp_4": 0,
         "restecg_1": 0,
         "restecg_2": 1,
-        "thal_6.0": 1
-        "thal_7.0": 0
+        "thal_6.0": 1,
+        "thal_7.0": 0,
         "slope_2": 0,
-        "slope_3": 1,
+        "slope_3": 1
     }])
     pred = model.predict(sample)
     assert pred is not None
