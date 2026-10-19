@@ -3,6 +3,14 @@ import joblib
 from fastapi import FastAPI
 from pydantic import BaseModel
 import pandas as pd
+import logging
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+)
+logger = logging.getLogger("heart-api")
+
 
 MODEL_PATH = (
     Path(__file__).resolve().parents[1]
@@ -46,6 +54,9 @@ class InputData(BaseModel):
 
 @app.post("/predict")
 def predict(data: InputData):
+
+    logger.info(f"Incoming /predict request: {data.dict()}")
+
     # 1. Convert input JSON data to a pandas DataFrame
     raw_df = pd.DataFrame([data.dict()])
 
@@ -78,6 +89,10 @@ def predict(data: InputData):
     # Get confidence score of the predicted class
     probabilities = model.predict_proba(aligned_df)[0]
     confidence = float(probabilities[prediction])
+
+    logger.info(
+        f"Prediction result: prediction={int(prediction)}, confidence={confidence}"
+    )
 
     return {
         "prediction": int(prediction),
