@@ -72,7 +72,7 @@ def predict(data: InputData):
     aligned_df = processed_df[MODEL_INPUT_FEATURES]
 
     ## 4. Predict and return prediction
-    prediction = model.predict(aligned_df)
+    prediction = model.predict(aligned_df)[0]
     #return {"prediction": int(prediction[0])}
 
     # Get confidence score of the predicted class
