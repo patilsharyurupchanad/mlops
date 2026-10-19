@@ -19,13 +19,14 @@ MODEL_INPUT_FEATURES = [
     "thal_7.0", "slope_2", "slope_3"
 ]
 
+
 app = FastAPI(title="Heart Disease Detection")
 
+
 @app.get("/health")
-
-
 def health():
     return {"status": "ok", "message": "API is healthy"}
+
 
 class InputData(BaseModel):
     age: int
@@ -42,9 +43,8 @@ class InputData(BaseModel):
     ca: int
     thal: int
 
+
 @app.post("/predict")
-
-
 def predict(data: InputData):
     # 1. Convert input JSON data to a pandas DataFrame
     raw_df = pd.DataFrame([data.dict()])
