@@ -29,19 +29,27 @@ def health():
 
 
 class InputData(BaseModel):
+     "trestbps", "chol", "fbs", "thalach", "exang", "oldpeak",
+    "ca", "cp_2", "cp_3", "cp_4", "restecg_1", "restecg_2", "thal_6.0",
+    "thal_7.0", "slope_2", "slope_3"
     age: int
     sex: int
-    cp: int
     trestbps: int
     chol: int
     fbs: int
-    restecg: int
     thalach: int
     exang: int
     oldpeak: float
-    slope: int
     ca: int
-    thal: int
+    cp_2: int
+    cp_3: int
+    cp_4: int
+    restecg_1: int
+    restecg_2: int
+    thal_6.0: int
+    thal_7.0: int
+    slope_2: int
+    slope_3: int
 
 
 @app.post("/predict")
@@ -71,6 +79,15 @@ def predict(data: InputData):
     # by the model pipeline
     aligned_df = processed_df[MODEL_INPUT_FEATURES]
 
-    # 4. Predict and return prediction
-    prediction = model.predict(aligned_df)
-    return {"prediction": int(prediction[0])}
+    ## 4. Predict and return prediction
+    #prediction = model.predict(aligned_df)
+    #return {"prediction": int(prediction[0])}
+
+    # Get confidence score of the predicted class
+    probabilities = model.predict_proba(aligned_df)[0]
+    confidence = float(probabilities[prediction])
+
+    return {
+        "prediction": int(prediction),
+        "confidence": confidence
+    }
