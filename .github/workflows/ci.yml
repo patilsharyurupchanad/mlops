@@ -28,7 +28,7 @@ jobs:
       run: PYTHONPATH=. pytest tests -v
 
     - name: Train model
-      run: python train.py
+      run: python src/train.py
 
     - name: Upload trained model artifact
       uses: actions/upload-artifact@v4
