@@ -1,256 +1,172 @@
-Heart Disease Prediction – End‑to‑End MLOps Pipeline
-GitHub Repository: https://github.com/patilsharyurupchanad/mlops
+# Heart Disease Prediction – End‑to‑End MLOps Pipeline
+
+[![GitHub Repository](https://img.shields.io/badge/GitHub-Repository-blue?logo=github)](https://github.com/patilsharyurupchanad/mlops)
 
 A complete MLOps workflow for Heart Disease Prediction, covering EDA, model training, MLflow experiment tracking, FastAPI model serving, Docker containerization, Kubernetes deployment, monitoring (Prometheus + Grafana), CI/CD automation, and production‑readiness.
 
-📁 Project Structure
-Code
+---
+
+## 📁 Project Structure
+
+```text
 mlops/
 │
+├── .github/workflows/
+│   └── ci.yml                  # GitHub Actions CI/CD Pipeline
 ├── api/
-│   └── main.py
-│
+│   └── main.py                 # FastAPI Application with Prometheus Tracking
 ├── docker/
-│   └── Dockerfile
-│
+│   └── Dockerfile              # Containerization Definition
 ├── k8s/
-│   ├── deployment.yaml
-│   └── service.yaml
-│
+│   ├── deployment.yaml         # Kubernetes Deployment Manifest
+│   └── service.yaml            # Kubernetes Service Manifest
 ├── models/
-│   └── champion_model.pkl
-│
+│   └── champion_model.pkl      # Serialized Champion Model Artifact
 ├── notebooks/
-│   └── assign1_heart_disease.ipynb
-│
+│   └── assign1_heart_disease.ipynb  # Jupyter Notebook for EDA, Training & MLflow Tracking
 ├── src/
-│   └── train.py
-│
+│   └── train.py                # Model Training Script
 ├── test/
-│   ├── test_api.py
-│   ├── test_model.py
-│
-├── screenshots/
-│
-├── requirements.txt
-├── README.md
-└── REPORT.pdf
-⚙️ Installation & Setup (Step‑Wise with Brief Explanation)
-Below is the complete setup workflow required to run the project from a clean environment.
+│   ├── test_api.py             # API Unit Tests
+│   └── test_model.py           # Model Framework Tests
+├── screenshots/                # Pipeline Telemetry & UI Verification Images
+├── requirements.txt            # Python Dependencies Spectrum
+├── README.md                   # Project Documentation Index
+└── REPORT.pdf                  # Comprehensive 10-Page Engineering Report
+```
 
-1. Clone the Repository
-Download the project to your local machine.
+---
 
-bash
-git clone https://github.com/patilsharyurupchanad/mlops
+## ⚙️ Installation & Setup
+
+Below is the step-by-step pipeline workflow required to bootstrap, deploy, and monitor the project from a clean machine environment.
+
+### 1. Clone the Repository
+Download the project source to your local workstation.
+```bash
+git clone https://github.com/patilsharyurupchanad/mlops.git
 cd mlops
-Explanation:  
-This pulls all code, notebooks, Dockerfiles, Kubernetes manifests, and CI/CD workflows.
+```
+* **Explanation:** This pulls down all code files, local notebooks, configuration setups, Kubernetes manifests, and GitHub Action automation workflows.
 
-2. Create a Python Environment
-Use any environment tool (venv, conda, pyenv).
-
-bash
+### 2. Create a Python Environment
+Initialize an isolated working environment using your preferred manager (`venv`, `conda`, or `pyenv`).
+```bash
+# Initialize the virtual environment
 python -m venv venv
-source venv/bin/activate   # Mac/Linux
+
+# Activate the workspace environment
+source venv/bin/activate   # Mac / Linux
+# OR
 venv\Scripts\activate      # Windows
-Explanation:  
-Keeps dependencies isolated and avoids conflicts with system Python.
+```
+* **Explanation:** This keeps your pipeline dependencies self-contained and avoids system-wide Python package version conflicts.
 
-3. Install Dependencies
-Install all required packages.
-
-bash
+### 3. Install Dependencies
+Populate the active environment with the exact project requirements.
+```bash
 pip install -r requirements.txt
-Explanation:  
-This installs FastAPI, Uvicorn, MLflow, scikit‑learn, pandas, Prometheus instrumentation, and all tools used in the pipeline.
+```
+* **Explanation:** Installs core engineering tools including FastAPI, Uvicorn, MLflow, Scikit-Learn, Pandas, and the Prometheus FastAPI Instrumentator engine.
 
-4. Run the Notebook (EDA + Training + MLflow Tracking)
-Open:
-
-Code
+### 4. Run the Experimentation & Training Pipeline
+Launch your notebook runtime engine and open:
+```text
 notebooks/assign1_heart_disease.ipynb
-Run all cells.
+```
+Execute all cells sequentially. The notebook runtime will automatically process the following routines:
+* Complete detailed Data Cleaning and Exploratory Data Analysis (EDA).
+* Train multiple candidate machine learning model variants.
+* Stream parameters and evaluation performance metrics straight to an **MLflow** session.
+* Identify the highest-performing variant, label it the "Champion Model", and export it.
+* Generate automated browser downloads for `champion_model.pkl` and `MLflow_export.zip`.
 
-✔ The notebook will automatically:
-Perform EDA
+> ⚠️ **Important Browser Note:** Ensure your browser configurations permit **multiple file downloads** concurrently so both files exit the notebook successfully.
 
-Train multiple models
-
-Track experiments in MLflow
-
-Select the champion model
-
-Download champion_model.pkl
-
-Download MLflow_export.zip
-
-⚠️ Important:  
-Enable multiple file downloads in your browser.
-
-Explanation:  
-This notebook generates the trained model and MLflow artifacts required for serving.
-
-5. Run FastAPI Locally
-Start the model inference API.
-
-bash
+### 5. Launch FastAPI Locally
+Spin up a local ASGI application worker instance to serve your model for real-time predictions:
+```bash
 uvicorn api.main:app --host 0.0.0.0 --port 8000
-Test endpoints:
+```
+Verify the operational health status and router endpoints using your browser or terminal utility:
+* **Health Endpoint:** `http://localhost:8000/health`
+* **Prediction Documentation UI:** `http://localhost:8000/docs`
 
-Code
-http://localhost:8000/health
-http://localhost:8000/predict
-Explanation:  
-This serves the trained model via REST API.
-
-6. Build Docker Image
-Containerize the API.
-
-bash
+### 6. Build and Verify the Docker Container Image
+Containerize your prediction serving application layer to build an immutable environment artifact:
+```bash
+# Build the Docker image mapping from the root execution context
 docker build -t heart-api:latest -f docker/Dockerfile .
-Run container:
 
-bash
+# Instantiate the container locally mapping standard app ports
 docker run -p 8000:8000 heart-api:latest
-Explanation:  
-Ensures the model runs in an isolated, reproducible environment.
+```
+* **Explanation:** Isolates system dependencies, configurations, and core Python binaries inside a reproducible container wrapper layer.
 
-7. Deploy to Kubernetes (Docker Desktop Kubernetes)
-Apply manifests:
-
-bash
+### 7. Orchestrate Deployment inside Kubernetes
+Apply the cloud-native deployment declarations to a working cluster (such as Docker Desktop Kubernetes, Minikube, or Kind):
+```bash
+# Deploy the container runtime specification pods
 kubectl apply -f k8s/deployment.yaml
+
+# Bind and expose the routing Service resource
 kubectl apply -f k8s/service.yaml
-Port‑forward:
 
-bash
-kubectl port-forward svc/heart-api-service 8001:8000
-Test:
+# Tunnel traffic safely from your local machine adapter loopback into the service network
+kubectl port-forward svc/heart-api-service 8002:8000 --address 0.0.0.0
+```
+Test your live, cluster-managed endpoints via your desktop interface or terminal shell:
+* **Cluster Application Health:** `http://127.0.0.1:8002/health`
+* **Interactive OpenAPI Swagger Docs UI:** `http://127.0.0.1:8002/docs`
 
-Code
-http://localhost:8001/health
-http://localhost:8001/predict
-Explanation:  
-This deploys the API to a production‑like environment.
+### 8. Access Integrated Infrastructure Monitoring
+Verify that runtime metrics engine integration captures cluster transaction activity:
+* **Raw Prometheus Text Stream Metrics:** `http://127.0.0.1:8002/metrics`
+* **Visual Telemetry Dashboard Experience:** Access Grafana at `http://localhost:3000`
 
-8. Enable Monitoring (Prometheus + Grafana)
-Prometheus metrics:
+The system collects, aggregates, and visualizes live traffic signals including **Total Request Volumes**, **Latency Quantiles**, **/predict Endpoint Hit Rates**, and **Worker Node Engine Performance**.
 
-Code
-http://localhost:8001/metrics
-Grafana dashboard:
+### 9. Automated CI/CD Pipeline Tracking
+Continuous Integration and Delivery flows run automatically via the configuration rule file located at `.github/workflows/ci.yml`. Every code push triggers a structured sequence:
+* Code linting verification checks.
+* Python unit and contract tests execution (`pytest`).
+* Automated validation test iterations across the data model layers.
+* Staged artifact uploads and container engine verification checks.
 
-Code
-http://localhost:3000
-Explanation:  
-Provides real‑time monitoring of API performance and traffic.
+---
 
-9. CI/CD Pipeline (GitHub Actions)
-Workflow file:
+## 🚀 API Endpoint Schema
 
-Code
-.github/workflows/ci.yml
-Pipeline includes:
+### `GET /health`
+* **Description:** Basic service availability confirmation routing.
+* **Response Body (JSON):**
+  ```json
+  {
+    "status": "ok",
+    "message": "API is healthy"
+  }
+  ```
 
-Linting
+### `POST /predict`
+* **Description:** Evaluates 18 input features to predict heart disease risk metrics.
+* **Request Body Example (JSON containing engineered features):**
+  ```json
+  {
+    "age": 63, "sex": 1, "trestbps": 145, "chol": 233, "fbs": 1, "thalach": 150, 
+    "exang": 0, "oldpeak": 2.3, "ca": 0, "cp_2": 0, "cp_3": 0, "cp_4": 0, 
+    "restecg_1": 0, "restecg_2": 1, "thal_6.0": 0, "thal_7.0": 0, "slope_2": 0, "slope_3": 1
+  }
+  ```
+* **Response Body Example (JSON):**
+  ```json
+  {
+    "prediction": 1,
+    "confidence": 0.87
+  }
+  ```
 
-Unit tests
+---
 
-Model training
-
-Artifact upload
-
-Build validation
-
-Explanation:  
-Ensures automated testing and reproducible builds.
-
-📊 Notebook: EDA + Training + MLflow
-The notebook performs:
-
-Data cleaning
-
-Exploratory Data Analysis
-
-Feature engineering
-
-Model training
-
-MLflow experiment tracking
-
-Champion model selection
-
-Automatic export of model + MLflow artifacts
-
-🚀 API Endpoints
-GET /health
-Health check endpoint.
-
-POST /predict
-Accepts JSON input and returns:
-
-json
-{
-  "prediction": 0,
-  "confidence": 0.87
-}
-🐳 Docker
-Build:
-
-bash
-docker build -t heart-api:latest .
-Run:
-
-bash
-docker run -p 8000:8000 heart-api:latest
-☸️ Kubernetes
-Deployment:
-
-bash
-kubectl apply -f k8s/deployment.yaml
-Service:
-
-bash
-kubectl apply -f k8s/service.yaml
-📈 Monitoring
-Prometheus metrics:
-
-Code
-/metrics
-Grafana dashboard includes:
-
-Request count
-
-Latency
-
-/predict traffic
-
-API performance
-
-📸 Screenshots
-All screenshots are stored in:
-
-Code
-screenshots/
-Includes:
-
-MLflow
-
-CI/CD
-
-Docker
-
-Kubernetes
-
-Prometheus
-
-Grafana
-
-API testing
-
-📄 Final Report
-A 10‑page professional report is included as:
-
-Code
-REPORT.pdf
+## 📸 Architectural Telemetry and Reports
+* **Pipeline Artifact Screenshots:** All visual proofs, covering MLflow experiment runs, active GitHub Actions, active Docker run status, active Kubernetes components, and live Prometheus/Grafana monitors are cataloged inside the `/screenshots` directory.
+* **Technical Design Documentation Report:** A publication-grade, detailed 10-page structural analysis breakdown is compiled as **`REPORT.pdf`**.
