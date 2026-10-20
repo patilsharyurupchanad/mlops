@@ -84,21 +84,22 @@ def predict(data: InputData):
     # by the model pipeline
     aligned_df = processed_df[MODEL_INPUT_FEATURES]
 
-    ## 4. Predict and return prediction
+    # 4. Predict and return prediction
     prediction = model.predict(aligned_df)[0]
-    #return {"prediction": int(prediction[0])}
 
     # Get confidence score of the predicted class
     probabilities = model.predict_proba(aligned_df)[0]
     confidence = float(probabilities[prediction])
 
     logger.info(
-        f"Prediction result: prediction={int(prediction)}, confidence={confidence}"
+        f"Prediction result: prediction={int(prediction)}, \
+            confidence={confidence}"
     )
 
     return {
         "prediction": int(prediction),
         "confidence": confidence
     }
+
 
 Instrumentator().instrument(app).expose(app, endpoint="/metrics")
