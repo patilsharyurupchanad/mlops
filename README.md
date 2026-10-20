@@ -69,7 +69,7 @@ pip install -r requirements.txt
 ```
 * **Explanation:** Installs core engineering tools including FastAPI, Uvicorn, MLflow, Scikit-Learn, Pandas, and the Prometheus FastAPI Instrumentator engine.
 
-### 4. Run the Experimentation & Training Pipeline (EDA + Training + MLflow)
+### 4.1 Run the Experimentation & Training Pipeline (EDA + Training + MLflow)
 
 Launch your Jupyter notebook interface and open:
 ```text
@@ -113,6 +113,42 @@ To inspect your tracked experiment parameters, runs, loss metrics, and performan
 
 **Explanation:** 
 This pipeline stage isolates your high-performing machine learning artifacts and starts a local registry interface to systematically cross-reference your training runs before exporting files directly down into production container environments.
+
+## 4.2 Dataset Downloading and Model Training
+
+### Step 1: Download the dataset
+
+From the project root directory, run:
+
+``` bash
+python3 sample_data/download_data.py
+```
+
+The CSV file will be created at:
+
+``` text
+sample_data/heart_disease_raw.csv
+```
+
+### Step 2: Train the model
+
+Run the model training script to preprocess the dataset, train the
+model, and save the trained model.
+
+``` bash
+python3 train.py
+```
+
+**Note:** Replace `train.py` with the actual path to your training
+script if it has a different filename or location.
+
+### Step 3: Verify the trained model
+
+Confirm that the trained model is saved at:
+
+``` text
+models/champion_model.pkl
+```
 
 ### 5. Launch FastAPI Locally
 Spin up a local ASGI application worker instance to serve your model for real-time predictions:
