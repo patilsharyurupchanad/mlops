@@ -69,19 +69,50 @@ pip install -r requirements.txt
 ```
 * **Explanation:** Installs core engineering tools including FastAPI, Uvicorn, MLflow, Scikit-Learn, Pandas, and the Prometheus FastAPI Instrumentator engine.
 
-### 4. Run the Experimentation & Training Pipeline
-Launch your notebook runtime engine and open:
+### 4. Run the Experimentation & Training Pipeline (EDA + Training + MLflow)
+
+Launch your Jupyter notebook interface and open:
 ```text
 notebooks/assign1_heart_disease.ipynb
 ```
-Execute all cells sequentially. The notebook runtime will automatically process the following routines:
-* Complete detailed Data Cleaning and Exploratory Data Analysis (EDA).
-* Train multiple candidate machine learning model variants.
-* Stream parameters and evaluation performance metrics straight to an **MLflow** session.
-* Identify the highest-performing variant, label it the "Champion Model", and export it.
-* Generate automated browser downloads for `champion_model.pkl` and `MLflow_export.zip`.
+Execute all cells sequentially. The notebook runtime will automatically complete detailed data preprocessing, candidate model testing, and evaluation metrics logging. 
 
-> ⚠️ **Important Browser Note:** Ensure your browser configurations permit **multiple file downloads** concurrently so both files exit the notebook successfully.
+Once complete, the notebook will trigger automated browser downloads for your top-performing `champion_model.pkl` file and an `MLflow_export.zip` archival tracking package.
+
+> ⚠️ **Important Browser Configuration:** Ensure your browser permissions allow **multiple concurrent file downloads** so both files exit the runtime environment successfully.
+
+#### Launching the MLflow Tracking UI Locally
+
+To inspect your tracked experiment parameters, runs, loss metrics, and performance charts locally, follow these steps in a new WSL terminal window:
+
+1. Navigate to the local directory where your browser saved the downloaded training files:
+   ```bash
+   cd Downloads
+   ```
+   *(Adjust this path if your Windows user profile downloads folders are mapped differently).*
+
+2. Extract the downloaded MLflow run archive:
+   ```bash
+   unzip MLflow_export.zip -d MLflow_export
+   ```
+
+3. Move inside the extracted tracking directory:
+   ```bash
+   cd MLflow_export
+   ```
+
+4. Spin up the MLflow tracking dashboard server bound to all local network adapters:
+   ```bash
+   mlflow ui --host 0.0.0.0 --port 5000
+   ```
+
+5. Review your pipeline iterations, feature coefficients, and metrics charts directly within your host web browser at:
+   ```text
+   http://localhost:5000
+   ```
+
+**Explanation:** 
+This pipeline stage isolates your high-performing machine learning artifacts and starts a local registry interface to systematically cross-reference your training runs before exporting files directly down into production container environments.
 
 ### 5. Launch FastAPI Locally
 Spin up a local ASGI application worker instance to serve your model for real-time predictions:
