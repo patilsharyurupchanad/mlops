@@ -130,7 +130,7 @@ Containerize your prediction serving application layer to build an immutable env
 docker build -t heart-api:latest -f docker/Dockerfile .
 
 # Instantiate the container locally mapping standard app ports
-docker run -p 8000:8000 heart-api:latest
+docker run -p 8001:8000 heart-api:latest
 ```
 * **Explanation:** Isolates system dependencies, configurations, and core Python binaries inside a reproducible container wrapper layer.
 
