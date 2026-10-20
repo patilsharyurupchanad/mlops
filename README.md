@@ -121,7 +121,7 @@ This pipeline stage isolates your high-performing machine learning artifacts and
 From the project root directory, run:
 
 ``` bash
-python3 sample_data/download_data.py
+python sample_data/download_data.py
 ```
 
 The CSV file will be created at:
@@ -136,7 +136,7 @@ Run the model training script to preprocess the dataset, train the
 model, and save the trained model.
 
 ``` bash
-python3 train.py
+python src/train.py
 ```
 
 **Note:** Replace `train.py` with the actual path to your training
