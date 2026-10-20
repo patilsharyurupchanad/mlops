@@ -17,6 +17,6 @@ spec:
       containers:
       - name: heart-api
         image: heart-api:latest
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         ports:
         - containerPort: 8000
