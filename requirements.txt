@@ -1,3 +1,4 @@
+ucimlrepo
 mlflow==3.17.1
 lz4==4.4.5
 numpy==2.1.3
