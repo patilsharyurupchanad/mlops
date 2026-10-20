@@ -1,7 +1,7 @@
 from pathlib import Path
 import joblib
 from fastapi import FastAPI
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 import pandas as pd
 import logging
 from prometheus_fastapi_instrumentator import Instrumentator
@@ -41,17 +41,22 @@ def health():
 class InputData(BaseModel):
     age: int
     sex: int
-    cp: int
     trestbps: int
     chol: int
     fbs: int
-    restecg: int
     thalach: int
     exang: int
     oldpeak: float
-    slope: int
     ca: int
-    thal: int
+    cp_2: int
+    cp_3: int
+    cp_4: int
+    restecg_1: int
+    restecg_2: int
+    thal_6_0: float = Field(alias="thal_6.0")
+    thal_7_0: float = Field(alias="thal_7.0")
+    slope_2: int
+    slope_3: int
 
 
 @app.post("/predict")
@@ -60,35 +65,12 @@ def predict(data: InputData):
     logger.info(f"Incoming /predict request: {data.dict()}")
 
     # 1. Convert input JSON data to a pandas DataFrame
-    raw_df = pd.DataFrame([data.dict()])
-
-    # 2. Re-apply the exact same get_dummies logic
-    # as done in the notebook training
-    categorical_cols = ["cp", "restecg", "thal", "slope"]
-    processed_df = pd.get_dummies(raw_df, columns=categorical_cols,
-                                  drop_first=False)
-
-    # In python pandas dummy names would look like 'cp_1', 'cp_2',
-    # or 'thal_6.0' We need to guarantee 'thal' columns keep float
-    # representations in string matching
-    processed_df.columns = [
-            col.replace(".0", ".0") for col in processed_df.columns]
-
-    # 3. Align Columns: Reindex to the 18 expected model features,
-    # setting absent columns to False
-    for col in MODEL_INPUT_FEATURES:
-        if col not in processed_df.columns:
-            processed_df[col] = False
-
-    # Ensure features are in the exact structural order expected
-    # by the model pipeline
-    aligned_df = processed_df[MODEL_INPUT_FEATURES]
-
+    raw_df = pd.DataFrame([data.model_dump()], columns=MODEL_INPUT_FEATURES)
     # 4. Predict and return prediction
-    prediction = model.predict(aligned_df)[0]
+    prediction = model.predict(raw_df)[0]
 
     # Get confidence score of the predicted class
-    probabilities = model.predict_proba(aligned_df)[0]
+    probabilities = model.predict_proba(raw_df)[0]
     confidence = float(probabilities[prediction])
 
     logger.info(
