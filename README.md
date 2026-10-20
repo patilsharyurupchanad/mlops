@@ -186,8 +186,19 @@ Test your live, cluster-managed endpoints via your desktop interface or terminal
 * **Cluster Application Health:** `http://127.0.0.1:8002/health`
 * **Interactive OpenAPI Swagger Docs UI:** `http://127.0.0.1:8002/docs`
 
-### 8. Access Integrated Infrastructure Monitoring
+### 8 Access Integrated Infrastructure Monitoring
 Verify that runtime metrics engine integration captures cluster transaction activity:
+* **Deploy Prometheus + Grafana on Docker Desktop Kubernetes**`
+```bash
+
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo add grafana https://grafana.github.io/helm-charts
+helm repo update
+helm install prometheus prometheus-community/prometheus
+helm install grafana grafana/grafana
+kubectl get secret grafana -o jsonpath="{.data.admin-password}" | base64 -d
+kubectl port-forward svc/grafana 3000:80
+```
 * **Raw Prometheus Text Stream Metrics:** `http://127.0.0.1:8002/metrics`
 * **Visual Telemetry Dashboard Experience:** Access Grafana at `http://localhost:3000`
 
